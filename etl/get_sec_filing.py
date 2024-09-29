@@ -1,5 +1,4 @@
 import requests
-import pdfkit
 from sec_downloader import Downloader
 from weasyprint import HTML
 
