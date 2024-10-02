@@ -1,1 +1,4 @@
 .env
+__pycache__/
+data
+chat_with_your_pdf.ipynb
