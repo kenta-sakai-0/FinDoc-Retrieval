@@ -1,8 +1,20 @@
+# Standard packages
+pandas
+requests
+python-dotenv
+weasyprint
 qdrant-client
+sec-downloader
+transformers
+colpali_engine
+numpy
+pdf2image
+celery
+fastapi
+uvicorn
 
+# PyTorch packages
+--extra-index-url https://download.pytorch.org/whl/cu124
 torch
 torchvision
 torchaudio
---index-url https://download.pytorch.org/whl/cu124
-
-pandas

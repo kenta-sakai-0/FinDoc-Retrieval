@@ -3,3 +3,6 @@ __pycache__/
 data
 chat_with_your_pdf.ipynb
 findoc_embedding
+project_config
+logs
+tutorial notebooks
