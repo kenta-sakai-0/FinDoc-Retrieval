@@ -4,11 +4,22 @@ from datetime import datetime, timedelta
 from sec_filings.ping_edgar import ping_edgar
 from sec_filings.download_filing_as_html import download_submissions_as_html
 from sec_filings.convert_html_to_pdf import convert_submissions_to_pdf
-from sec_filings.colpali_embedding import embed_submissions
 
 import sys
 sys.path.append("/opt/airflow")
 from project_config import colpali_config
+import requests
+
+def embed_submissions_api(submissions_dict):
+    url = "http://host.docker.internal:8000/embed_submissions"
+    
+    try:
+        response = requests.post(url, json=submissions_dict)
+        response.raise_for_status()  # Raise an error if the request failed
+        print("Successfully submitted data to the API.")
+    except requests.exceptions.RequestException as e:
+        print(f"API call failed: {e}")
+        return None
 
 default_args = {
     'owner': 'airflow',
@@ -50,12 +61,11 @@ with DAG(
     
     embed_submissions = PythonOperator(
         task_id = "embed_submissions",
-        python_callable = embed_submissions,
+        python_callable = embed_submissions_api,
         op_kwargs={
             'submissions_dict': "{{ task_instance.xcom_pull(task_ids='convert_submissions_to_pdf') }}"
             },
         dag = dag
         )
     
-
     ping_edgar >> download_submissions_as_html >> convert_submissions_to_pdf  >> embed_submissions
